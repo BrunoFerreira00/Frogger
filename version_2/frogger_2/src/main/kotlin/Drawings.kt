@@ -18,21 +18,6 @@ const val DOWNWALK_ROW = GRID_SIZE*14
 
 
 /**
- * Draws the car on the canvas.
- * @param c the canvas to draw on
- * @param x the position of the col where the car is
- * @param y the position of the row where the car is
- */
-
-
-fun drawcar1(c: Canvas, x: Int, y: Int){
-    c.drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-}
-fun drawcar4(c: Canvas, x: Int, y: Int){
-    c.drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-}
-
-/**
  * Draws the two purple walks on different rows of the canvas.
  * @param c the canvas to draw on
  * @param x the position of the col where the walks are
@@ -87,12 +72,12 @@ fun drawriver(c: Canvas, x: Int, y:Int){
 }
 
 fun Car.drawCars(c: Canvas,x:Int,y:Int){
-    when{
-        type == CarType.TRUCK -> c.drawImage("frogger|74,116,32,32",x,y,GRID_SIZE,GRID_SIZE)
-        type == CarType.SPEED1 -> c.drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        type == CarType.SPEED2-> c.drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        type == CarType.BULLDOZER -> c.drawImage("frogger|56,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        type == CarType.CAR -> c.drawImage("frogger|0,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+    when (type) {
+        CarType.TRUCK -> c.drawImage("frogger|74,116,32,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.SPEED1 -> c.drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.SPEED2 -> c.drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.BULLDOZER -> c.drawImage("frogger|56,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.CAR -> c.drawImage("frogger|0,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
     }
 }
 
