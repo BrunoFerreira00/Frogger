@@ -1,3 +1,5 @@
+import javax.swing.text.Position
+
 /**
  * Represents the state of a frog.
  * STAY, GONE and HOME are stable states, the others are intermediate states.
@@ -42,4 +44,22 @@ fun createFrog() =
         FrogState.STAY,
         0)
 
-//fun Frogger.isDead():Boolean =  frog.position  in cars
+fun Frogger.isDead():Frogger {
+    cars.any { it.part.x == frog.position.col && it.part.row == frog.position.row }
+    return Frogger(frog = frog.copy(state = FrogState.DEAD),cars)
+}
+
+fun Frogger.moveFrog(dir: Direction):Frogger {
+    val newPos = when (dir) {
+        Direction.UP -> Point(frog.position.col, frog.position.row - GRID_SIZE)
+        Direction.DOWN -> Point(frog.position.col, frog.position.row + GRID_SIZE)
+        Direction.LEFT -> Point(frog.position.col - GRID_SIZE, frog.position.row)
+        Direction.RIGHT -> Point(frog.position.col + GRID_SIZE, frog.position.row)
+    }
+    return if (newPos.isValid()) this.copy(
+        frog = Frog(position = newPos, dir = dir, state = FrogState.MOVE),
+        cars = cars
+    )
+    else this
+}
+

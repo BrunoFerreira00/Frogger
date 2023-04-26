@@ -39,6 +39,7 @@ fun main() {
         canvas.onTimeProgress(REFRESH_TIME) {
             game = game.step()
             canvas.drawGame(game)
+
         }
     }
     onFinish { }
@@ -58,11 +59,4 @@ fun KeyEvent.toDirection(): Direction? = when(code) {
     else -> null
 }
 
-/**
- * Move the cars in the same direction
- * @receiver the positions of the cars in Frogger to be moved
- * @return the new position of the cars after the move
- */
-fun Frogger.step(): Frogger {
 
-}

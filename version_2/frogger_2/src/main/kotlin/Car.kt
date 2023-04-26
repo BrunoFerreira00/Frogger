@@ -46,6 +46,9 @@ fun createCars() = listOf(
 
 fun getCars(c:Canvas){
     createCars().forEach{car ->
-        car.drawCars(c, car.part.x,car.part.row )
+        car.drawCars(c, car.part.x,car.part.row*GRID_SIZE )
     }
 }
+
+fun Car.step() = copy(part = part.move ()) // Não funciona por algum motivo
+

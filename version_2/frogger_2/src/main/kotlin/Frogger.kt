@@ -8,3 +8,4 @@ data class Frogger(
     val frog: Frog,
     val cars: List<Car>
 )
+fun Frogger.step() = Frogger(frog/*.step()*/,cars = cars.map{it.step()})
