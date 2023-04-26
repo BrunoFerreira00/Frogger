@@ -49,17 +49,3 @@ fun Frogger.isDead():Frogger {
     return Frogger(frog = frog.copy(state = FrogState.DEAD),cars)
 }
 
-fun Frogger.moveFrog(dir: Direction):Frogger {
-    val newPos = when (dir) {
-        Direction.UP -> Point(frog.position.col, frog.position.row - GRID_SIZE)
-        Direction.DOWN -> Point(frog.position.col, frog.position.row + GRID_SIZE)
-        Direction.LEFT -> Point(frog.position.col - GRID_SIZE, frog.position.row)
-        Direction.RIGHT -> Point(frog.position.col + GRID_SIZE, frog.position.row)
-    }
-    return if (newPos.isValid()) this.copy(
-        frog = Frog(position = newPos, dir = dir, state = FrogState.MOVE),
-        cars = cars
-    )
-    else this
-}
-

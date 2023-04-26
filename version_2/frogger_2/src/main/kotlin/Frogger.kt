@@ -8,4 +8,15 @@ data class Frogger(
     val frog: Frog,
     val cars: List<Car>
 )
-fun Frogger.step() = Frogger(frog/*.step()*/,cars = cars.map{it.step()})
+fun Frogger.moveFrog(dir: Direction):Frogger {
+    val newPos = frog.position + dir
+    return if (newPos.isValid()) this.copy(
+        frog = Frog(position = newPos, dir = dir, state = FrogState.MOVE),
+        cars = cars
+    ) else this
+
+}
+fun Frogger.step() = copy(
+    frog = frog,
+    cars = cars.map { it.step() }
+)

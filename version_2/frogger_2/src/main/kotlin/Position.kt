@@ -7,3 +7,7 @@ enum class Direction(val dRow: Int = 0, val dCol: Int = 0) {
 
 fun Point.isValid() =
     (row in 0..SCREEN_HEIGHT-GRID_SIZE && col in 0..SCREEN_WIDTH-GRID_SIZE)
+
+operator fun Point.plus(dir: Direction) =
+    Point(col + dir.dCol*GRID_SIZE
+        , row + dir.dRow*GRID_SIZE)
