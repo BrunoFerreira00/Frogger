@@ -71,9 +71,9 @@ fun drawriver(c: Canvas, x: Int, y:Int){
     c.drawImage("frogger|1,390,16,16",x,y,GRID_SIZE*GRID_COLS,GRID_SIZE*(GRID_ROWS/2))
 }
 
-fun Car.drawCars(c: Canvas,x:Int,y:Int){
-    when (type) {
-        CarType.TRUCK -> c.drawImage("frogger|74,116,32,16",x,y,GRID_SIZE*2,GRID_SIZE)
+fun drawCars(c: Canvas,x:Int,y:Int,car:Car){
+    when (car.type) {
+        CarType.TRUCK -> c.drawImage("frogger|74,116,32,16",x,y,GRID_SIZE*CarType.TRUCK.size,GRID_SIZE)
         CarType.SPEED2 -> c.drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
         CarType.SPEED1 -> c.drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
         CarType.BULLDOZER -> c.drawImage("frogger|56,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
@@ -81,7 +81,7 @@ fun Car.drawCars(c: Canvas,x:Int,y:Int){
     }
 }
 
-fun Canvas.drawFrog(c:Canvas, x: Int, y:Int) {
+fun drawFrog(c:Canvas, x: Int, y:Int) {
     c.drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
 }
 
@@ -93,11 +93,11 @@ fun Canvas.drawFrog(c:Canvas, x: Int, y:Int) {
  */
 fun Canvas.drawGame(g: Frogger) {
     erase()
+    getCars(this,g.cars)
     drawriver(this,0,0)
     setSidewalks(this,UPPERWALK_ROW,DOWNWALK_ROW)
     timesdrawhome(this)
     timesdrawhome(this)
     drawFrog(this, g.frog.position.col, g.frog.position.row) //sapo não está centralizado com as casas
-    getCars(this)
-    //drawGrid()
+   // drawGrid()
 }

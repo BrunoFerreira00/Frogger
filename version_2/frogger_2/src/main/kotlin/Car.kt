@@ -44,11 +44,17 @@ fun createCars() = listOf(
     car(0, CarType.SPEED2), car(7, CarType.SPEED2), car(10, CarType.SPEED2)
 )
 
-fun getCars(c:Canvas){
-    createCars().forEach{car ->
-        car.drawCars(c, car.part.x,car.part.row*GRID_SIZE )
+fun Car.step() = copy(part = Movable( part.x , part.row, type.size, type.speed).move())
+
+
+fun getCars(c: Canvas, cars: List<Car>) {
+    cars.forEach { car ->
+        val newCars = car.copy(part = Movable(
+            car.part.x + car.type.speed,
+            car.part.row,
+            car.type.size,
+            car.type.speed).move())
+        drawCars(c, newCars.part.x, newCars.part.row * GRID_SIZE, newCars)
     }
 }
-
-fun Car.step() = copy(part = part.move ()) // Não funciona por algum motivo
 

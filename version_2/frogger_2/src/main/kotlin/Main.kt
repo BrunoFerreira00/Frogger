@@ -12,17 +12,6 @@ const val GRID_ROWS = 16  // Number of rows in the grid
 const val GRID_COLS = 14  // Number of columns in the grid
 
 /**
- * Information about the cars, vel= velocity, start= initial position
- */
-const val CAR1X_VEL = 1
-const val CAR4X_VEL = 2
-const val CAR1_START_X = 624
-const val CAR4_START_X = 0
-
-
-
-
-/**
  * The main function of the Frogger game.
  * Creates a canvas and starts the game.
  * The frog is moved by pressing the arrow keys.
