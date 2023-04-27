@@ -49,11 +49,7 @@ fun Car.step() = copy(part = Movable( part.x , part.row, type.size, type.speed).
 
 fun getCars(c: Canvas, cars: List<Car>) {
     cars.forEach { car ->
-        val newCars = car.copy(part = Movable(
-            car.part.x + car.type.speed,
-            car.part.row,
-            car.type.size,
-            car.type.speed).move())
+        val newCars = car.step()
         drawCars(c, newCars.part.x, newCars.part.row * GRID_SIZE, newCars)
     }
 }
