@@ -44,7 +44,7 @@ fun createCars() = listOf(
     car(0, CarType.SPEED2), car(7, CarType.SPEED2), car(10, CarType.SPEED2)
 )
 
-fun Car.step() = copy(part = Movable( part.x , part.row, type.size, type.speed).move())
+fun Car.step() = copy(part = part.move())
 
 
 fun getCars(c: Canvas, cars: List<Car>) {
