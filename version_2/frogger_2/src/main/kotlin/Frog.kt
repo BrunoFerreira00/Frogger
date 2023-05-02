@@ -43,9 +43,3 @@ fun createFrog() =
         Direction.UP,
         FrogState.STAY,
         0)
-
-fun Frogger.isDead():Frogger {
-    cars.any { it.part.x == frog.position.col && it.part.row == frog.position.row }
-    return Frogger(frog = frog.copy(state = FrogState.DEAD),cars)
-}
-

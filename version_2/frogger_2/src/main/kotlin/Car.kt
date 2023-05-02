@@ -1,5 +1,4 @@
-import pt.isel.canvas.*
-//import java.awt.Canvas
+import java.awt.Canvas
 
 
 /**
@@ -47,10 +46,4 @@ fun createCars() = listOf(
 fun Car.step() = copy(part = part.move())
 
 
-fun getCars(c: Canvas, cars: List<Car>) {
-    cars.forEach { car ->
-        val newCars = car.step()
-        drawCars(c, newCars.part.x, newCars.part.row * GRID_SIZE, newCars)
-    }
-}
 
