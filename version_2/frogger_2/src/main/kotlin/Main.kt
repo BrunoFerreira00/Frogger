@@ -22,11 +22,14 @@ fun main() {
         val canvas = Canvas(SCREEN_WIDTH, SCREEN_HEIGHT, BLACK)
         var game = Frogger(frog= createFrog(), cars= createCars())
         canvas.onKeyPressed { key ->
+            println(game.frog.state)
             val dir = key.toDirection()
             if (dir != null) game = game.moveFrog(dir)
+            println(game.frog.state)
         }
         canvas.onTimeProgress(REFRESH_TIME) {
             game = game.step()
+            println(game.frog.state)
             canvas.drawGame(game)
 
         }

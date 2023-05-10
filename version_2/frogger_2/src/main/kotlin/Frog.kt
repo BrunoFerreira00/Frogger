@@ -42,4 +42,37 @@ fun createFrog() =
         SCREEN_HEIGHT-GRID_SIZE),
         Direction.UP,
         FrogState.STAY,
-        0)
+        STATE_FRAMES)
+fun Frog.move(to: Direction):Frog =
+    if (state == FrogState.STAY)
+         if((position+to).isValid())
+            face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
+         else
+             face(to)
+    else copy(state = FrogState.STAY, frames = STATE_FRAMES).step().move(to)
+
+
+fun Frog.face(to: Direction):Frog =
+    if (dir==to) this else copy(dir= to)
+
+
+
+fun Frog.step(): Frog {
+    return if (frames > 0) {
+        copy(frames = frames - 1)
+    } else {
+        when (state) {
+            FrogState.STAY -> this
+            FrogState.MOVE -> copy(state = FrogState.STAY, frames = STATE_FRAMES)
+            FrogState.SMASH_1 -> copy(state = FrogState.SMASH_2, frames = STATE_FRAMES)
+            FrogState.SMASH_2 -> copy(state = FrogState.SMASH_3, frames = STATE_FRAMES)
+            FrogState.SMASH_3 -> copy(state = FrogState.DEAD, frames = STATE_FRAMES)
+            FrogState.DROWN_1 -> copy(state = FrogState.DROWN_2, frames = STATE_FRAMES)
+            FrogState.DROWN_2 -> copy(state = FrogState.DROWN_3, frames = STATE_FRAMES)
+            FrogState.DROWN_3 -> copy(state = FrogState.DEAD, frames = STATE_FRAMES)
+            FrogState.DEAD -> copy(state = FrogState.GONE)
+            FrogState.GONE -> this
+            FrogState.HOME -> this
+        }
+    }
+}
