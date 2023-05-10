@@ -43,13 +43,13 @@ fun createFrog() =
         Direction.UP,
         FrogState.STAY,
         STATE_FRAMES)
-fun Frog.move(to: Direction):Frog =
+fun Frog.move(to: Direction,cars: List<Car>):Frog =
     if (state == FrogState.STAY)
          if((position+to).isValid())
             face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
          else
              face(to)
-    else copy(state = FrogState.STAY, frames = STATE_FRAMES).step().move(to)
+    else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars).move(to,cars)
 
 
 fun Frog.face(to: Direction):Frog =
@@ -57,13 +57,23 @@ fun Frog.face(to: Direction):Frog =
 
 
 
-fun Frog.step(): Frog {
+fun Frog.step(cars: List<Car>): Frog {
+    val detectCar = cars.any{position.row  in it.part.toRangeX() } //TODO:DETECT IF FROG POSITION IS IN CAR POSITION
+    val detectRiver = position.row in GRID_SIZE*4 .. GRID_SIZE*7
     return if (frames > 0) {
         copy(frames = frames - 1)
     } else {
         when (state) {
             FrogState.STAY -> this
-            FrogState.MOVE -> copy(state = FrogState.STAY, frames = STATE_FRAMES)
+            FrogState.MOVE -> {
+                if (detectCar) {
+                    copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
+                } else if (detectRiver) {
+                    copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
+                } else {
+                    copy(state = FrogState.STAY, frames = STATE_FRAMES)
+                }
+            }
             FrogState.SMASH_1 -> copy(state = FrogState.SMASH_2, frames = STATE_FRAMES)
             FrogState.SMASH_2 -> copy(state = FrogState.SMASH_3, frames = STATE_FRAMES)
             FrogState.SMASH_3 -> copy(state = FrogState.DEAD, frames = STATE_FRAMES)

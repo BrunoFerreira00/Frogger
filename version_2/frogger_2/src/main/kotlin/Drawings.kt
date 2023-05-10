@@ -84,16 +84,20 @@ fun Canvas.drawCars(x:Int, y:Int, car:List<Car>){
     }
 }
 
-fun Canvas.drawFrog(x:Int,y:Int,dir:Direction,state:FrogState) {
-    when (state.ordinal) {
-        0 -> this.drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        1 -> this.drawImage("frogger|0,16,16,16", x+GRID_SIZE/2, y+GRID_SIZE/2, GRID_SIZE, GRID_SIZE)
-        2 -> this.drawImage("frogger|0,32,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        3 -> this.drawImage("frogger|0,48,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        4 -> this.drawImage("frogger|0,64,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        5 -> this.drawImage("frogger|0,80,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        6 -> this.drawImage("frogger|0,96,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        7 -> this.drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
+fun Canvas.drawFrog(x:Int,y:Int,state:FrogState) {
+    when (state) {
+        FrogState.STAY -> this.drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.MOVE -> this.drawImage("frogger|0,16,16,16", x+GRID_SIZE/2, y+GRID_SIZE/2, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_1 -> this.drawImage("frogger|0,32,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_2 -> this.drawImage("frogger|0,48,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_3 -> this.drawImage("frogger|0,64,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_1 -> this.drawImage("frogger|0,80,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_2 -> this.drawImage("frogger|0,96,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_3 -> this.drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DEAD ->
+        FrogState.GONE ->
+        FrogState.HOME ->
+
     } //TODO ajeitar as imagens do sapo incluindo a do move com os valores corretos
 }
 
@@ -106,7 +110,7 @@ fun Canvas.gameOver(){
     drawImage("frogger|127,370,8,8",(GRID_SIZE/2)*9,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
     drawImage("frogger|128,361,8,8",(GRID_SIZE/2)*10,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
     drawImage("frogger|91,361,8,8",(GRID_SIZE/2)*11,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    //TODO é preciso ajeitar a posição da imagem
+    //TODO é preciso ajeitar a posição da imagem para o centro do passeio
 }
 
 /**
@@ -120,12 +124,10 @@ fun Canvas.drawGame(g: Frogger) {
     drawRiver(0,0)
     setSidewalks(UPPERWALK_ROW,DOWNWALK_ROW)
     timesDrawHome()
-    drawFrog( g.frog.position.col, g.frog.position.row, g.frog.dir,g.frog.state)
+    drawFrog( g.frog.position.col, g.frog.position.row,g.frog.state)
     g.cars.forEach {
         drawCars(it.part.x, it.part.row*GRID_SIZE, listOf(it))
     }
-
-//TODO Chamar o GameOver
-
+    if (g.frog.state == FrogState.DEAD || g.frog.state == FrogState.GONE ) gameOver()
     drawGrid()
 }
