@@ -26,7 +26,7 @@ const val DOWNWALK_ROW = GRID_SIZE*14
  * @param y the position of the rows where the  sidewalks are
  */
 fun Canvas.drawSideWalk( x: Int, y: Int) {
-    this.drawImage("frogger|135,196,16,16",x,y,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|135,196,16,16",x,y,GRID_SIZE,GRID_SIZE)
 }
 /**
  * Draws the purple walks on all the row of the canvas.
@@ -49,8 +49,8 @@ fun Canvas.setSidewalks( y1: Int, y2: Int) {
  * @param y the position of the col where the part of the home is
  */
 fun Canvas.drawLineHome( x1: Int, x2: Int, y: Int){
-    this.drawImage("frogger|1,188,32,24",x1,y,HOME_WIDTH,HOME_HEIGHT)
-    this.drawImage("frogger|35,188,8,24",x2,y,HOME_INSIDE ,HOME_HEIGHT)
+    drawImage("frogger|1,188,32,24",x1,y,HOME_WIDTH,HOME_HEIGHT)
+    drawImage("frogger|35,188,8,24",x2,y,HOME_INSIDE ,HOME_HEIGHT)
 }
 /**
  * Draws the line home on all the row of the canvas.
@@ -75,29 +75,28 @@ fun Canvas.drawRiver(x: Int, y:Int){
 
 fun Canvas.drawCars(x:Int, y:Int, car:List<Car>){
      car.forEach{when (it.type){
-        CarType.TRUCK -> this.drawImage("frogger|74,116,32,16",x,y,GRID_SIZE*CarType.TRUCK.size,GRID_SIZE)
-        CarType.SPEED2 -> this.drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        CarType.SPEED1 -> this.drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        CarType.BULLDOZER -> this.drawImage("frogger|56,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
-        CarType.CAR -> this.drawImage("frogger|0,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.TRUCK -> drawImage("frogger|74,116,32,16",x,y,GRID_SIZE*CarType.TRUCK.size,GRID_SIZE)
+        CarType.SPEED2 -> drawImage("frogger|19,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.SPEED1 -> drawImage("frogger|37,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.BULLDOZER -> drawImage("frogger|56,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        CarType.CAR -> drawImage("frogger|0,116,16,16",x,y,GRID_SIZE,GRID_SIZE)
         }
     }
 }
 
 fun Canvas.drawFrog(x:Int,y:Int,state:FrogState) {
     when (state) {
-        FrogState.STAY -> this.drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.MOVE -> this.drawImage("frogger|0,16,16,16", x+GRID_SIZE/2, y+GRID_SIZE/2, GRID_SIZE, GRID_SIZE)
-        FrogState.SMASH_1 -> this.drawImage("frogger|0,32,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.SMASH_2 -> this.drawImage("frogger|0,48,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.SMASH_3 -> this.drawImage("frogger|0,64,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.DROWN_1 -> this.drawImage("frogger|0,80,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.DROWN_2 -> this.drawImage("frogger|0,96,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.DROWN_3 -> this.drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.STAY -> drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.MOVE -> drawImage("frogger|0,16,16,16", x+GRID_SIZE/2, y+GRID_SIZE/2, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_1 -> drawImage("frogger|0,32,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_2 -> drawImage("frogger|0,48,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.SMASH_3 -> drawImage("frogger|0,64,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_1 -> drawImage("frogger|0,80,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_2 -> drawImage("frogger|0,96,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.DROWN_3 -> drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.DEAD ->
         FrogState.GONE ->
         FrogState.HOME ->
-
     } //TODO ajeitar as imagens do sapo incluindo a do move com os valores corretos
 }
 
