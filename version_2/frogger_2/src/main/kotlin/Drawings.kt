@@ -16,11 +16,10 @@ const val HOME_END = GRID_SIZE*3
 const val UPPERWALK_ROW = GRID_SIZE*8
 const val DOWNWALK_ROW = GRID_SIZE*14
 
-
+const val FROGSTATE = 36
 
 /**
  * Draws the two purple walks on different rows of the canvas.
- * @param c the canvas to draw on
  * @param x the position of the col where the walks are
  * @param y the position of the rows where the  sidewalks are
  */
@@ -29,7 +28,6 @@ fun Canvas.drawSideWalk( x: Int, y: Int) {
 }
 /**
  * Draws the purple walks on all the row of the canvas.
- * @param c the canvas to draw on
  * @param y1 row of the first sidewalk
  * @param y2 row of the second sidewalk
  */
@@ -42,7 +40,6 @@ fun Canvas.setSidewalks( y1: Int, y2: Int) {
 
 /**
  * Draws the line home on the canvas.
- * @param c the canvas to draw on
  * @param x1 the position of the col where the first part of the home is
  * @param x2 the position of the row where the second part of the home is
  * @param y the position of the col where the part of the home is
@@ -53,7 +50,6 @@ fun Canvas.drawLineHome( x1: Int, x2: Int, y: Int){
 }
 /**
  * Draws the line home on all the row of the canvas.
- * @param c the canvas to draw on
  */
 fun Canvas.timesDrawHome(){
     for (x in 0..SCREEN_WIDTH step HOME_END) {
@@ -64,7 +60,6 @@ fun Canvas.timesDrawHome(){
 
 /**
  * Draws the river on different parts of the canvas.
- * @param c the canvas to draw on
  * @param x the position of the col where the river is
  * @param y the position of the row where the river is
  */
@@ -84,8 +79,8 @@ fun Canvas.drawCars(x:Int, y:Int, car:List<Car>){
 }
 
 fun Canvas.drawFrog(x:Int,y:Int,state:FrogState,dir:Direction){
-    val imageStay = dir.ordinal * 36
-    val imageMove = dir.ordinal * 36 + 18
+    val imageStay = dir.ordinal * FROGSTATE
+    val imageMove = dir.ordinal * FROGSTATE + 18
     val moveX = x-GRID_SIZE/2*dir.dCol
     val moveY = y-GRID_SIZE/2*dir.dRow
     when (state) {

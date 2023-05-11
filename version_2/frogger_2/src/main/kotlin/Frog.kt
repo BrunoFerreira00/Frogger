@@ -50,7 +50,7 @@ fun Frog.move(to: Direction,cars: List<Car>):Frog =
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
             else
                 face(to)
-    else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars).move(to,cars)
+        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars).move(to,cars)
 
 
 fun Frog.face(to: Direction):Frog =
