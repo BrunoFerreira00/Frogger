@@ -58,7 +58,7 @@ fun Frog.face(to: Direction):Frog =
 
 
 fun Frog.detectCar(cars: List<Car>):Boolean =
-    cars.any { position.row/GRID_SIZE == it.part.row && position.col in it.part.toRangeX() }
+    cars.any { position.row == it.part.row*GRID_SIZE && position.col+GRID_SIZE/2 in it.part.toRangeX() }
 
 fun Frog.detectRiver():Boolean= position.row in GRID_SIZE*4 .. GRID_SIZE*7
 
@@ -68,7 +68,6 @@ fun Frog.step(cars: List<Car>): Frog {
         copy(frames = frames - 1)
     } else {
         when (state) {
-            FrogState.STAY -> this
             FrogState.MOVE -> {
                 if (detectCar(cars)) {
                     copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
@@ -78,15 +77,11 @@ fun Frog.step(cars: List<Car>): Frog {
                     copy(state = FrogState.STAY, frames = STATE_FRAMES)
                 }
             }
-            FrogState.SMASH_1 -> copy(state = FrogState.SMASH_2, frames = STATE_FRAMES)
-            FrogState.SMASH_2 -> copy(state = FrogState.SMASH_3, frames = STATE_FRAMES)
-            FrogState.SMASH_3 -> copy(state = FrogState.DEAD, frames = STATE_FRAMES)
-            FrogState.DROWN_1 -> copy(state = FrogState.DROWN_2, frames = STATE_FRAMES)
-            FrogState.DROWN_2 -> copy(state = FrogState.DROWN_3, frames = STATE_FRAMES)
-            FrogState.DROWN_3 -> copy(state = FrogState.DEAD, frames = STATE_FRAMES)
+            FrogState.SMASH_1, FrogState.SMASH_2, FrogState.DROWN_1, FrogState.DROWN_2 ->
+                copy(frames = STATE_FRAMES, state= FrogState.values()[state.ordinal+1])
+            FrogState.SMASH_3, FrogState.DROWN_3 -> copy( state = FrogState.DEAD, frames = STATE_FRAMES)
             FrogState.DEAD -> copy(state = FrogState.GONE)
-            FrogState.GONE -> this
-            FrogState.HOME -> this
+            else -> this
         }
     }
 }
