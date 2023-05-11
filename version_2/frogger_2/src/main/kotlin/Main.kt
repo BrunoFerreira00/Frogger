@@ -24,8 +24,6 @@ fun main() {
         canvas.onKeyPressed { key ->
             val dir = key.toDirection()
             if (dir != null) game = game.moveFrog(dir)
-            print(game.frog.position)
-            println(game.cars.first().part)
         }
         canvas.onTimeProgress(REFRESH_TIME) {
             game = game.step()
