@@ -45,7 +45,7 @@ fun createFrog() =
         STATE_FRAMES)
 fun Frog.move(to: Direction,cars: List<Car>):Frog =
     if (state == FrogState.GONE) this
-        else if (state == FrogState.STAY)
+        else if (state == FrogState.STAY )
             if((position+to).isValid())
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
             else

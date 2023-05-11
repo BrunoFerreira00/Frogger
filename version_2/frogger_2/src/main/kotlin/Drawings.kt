@@ -18,7 +18,6 @@ const val DOWNWALK_ROW = GRID_SIZE*14
 
 
 
-
 /**
  * Draws the two purple walks on different rows of the canvas.
  * @param c the canvas to draw on
@@ -84,10 +83,14 @@ fun Canvas.drawCars(x:Int, y:Int, car:List<Car>){
     }
 }
 
-fun Canvas.drawFrog(x:Int,y:Int,state:FrogState) {
+fun Canvas.drawFrog(x:Int,y:Int,state:FrogState,dir:Direction){
+    val imageStay = dir.ordinal * 36
+    val imageMove = dir.ordinal * 36 + 18
+    val moveX = x-GRID_SIZE/2*dir.dCol
+    val moveY = y-GRID_SIZE/2*dir.dRow
     when (state) {
-        FrogState.STAY -> drawImage("frogger|0,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.MOVE -> drawImage("frogger|0,16,16,16", x+GRID_SIZE/2, y+GRID_SIZE/2, GRID_SIZE, GRID_SIZE)
+        FrogState.STAY -> drawImage("frogger|$imageStay,0,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.MOVE -> drawImage("frogger|$imageMove,0,16,16", moveX, moveY, GRID_SIZE, GRID_SIZE)
         FrogState.SMASH_1 -> drawImage("frogger|0,32,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.SMASH_2 -> drawImage("frogger|0,48,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.SMASH_3 -> drawImage("frogger|0,64,16,16", x, y, GRID_SIZE, GRID_SIZE)
@@ -97,7 +100,7 @@ fun Canvas.drawFrog(x:Int,y:Int,state:FrogState) {
         FrogState.DEAD -> drawImage("frogger|0,128,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.GONE -> drawImage("frogger|0,144,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.HOME -> drawImage("frogger|0,160,16,16", x, y, GRID_SIZE, GRID_SIZE)
-    } //TODO ajeitar as imagens do sapo incluindo a do move com os valores corretos
+    } //TODO ajeitar as imagens do sapo a morrer (acho que é o que falta) , diferente para afogado e atropelado
 }
 
 fun Canvas.gameOver(){
@@ -109,7 +112,7 @@ fun Canvas.gameOver(){
     drawImage("frogger|127,370,8,8",(GRID_SIZE/2)*9,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
     drawImage("frogger|128,361,8,8",(GRID_SIZE/2)*10,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
     drawImage("frogger|91,361,8,8",(GRID_SIZE/2)*11,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    //TODO é preciso ajeitar a posição da imagem para o centro do passeio
+    //TODO: é preciso ajeitar a posição da imagem para o centro do passeio
 }
 
 /**
@@ -124,7 +127,7 @@ fun Canvas.drawGame(g: Frogger) {
     setSidewalks(UPPERWALK_ROW,DOWNWALK_ROW)
     timesDrawHome()
     if (g.frog.state != FrogState.GONE) {
-        drawFrog(g.frog.position.col, g.frog.position.row, g.frog.state)
+        drawFrog(g.frog.position.col, g.frog.position.row, g.frog.state,g.frog.dir)
     }
     g.cars.forEach {
         drawCars(it.part.x, it.part.row*GRID_SIZE, listOf(it))
