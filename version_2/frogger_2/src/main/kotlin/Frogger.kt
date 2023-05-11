@@ -9,8 +9,7 @@ data class Frogger(
     val cars: List<Car>
 )
 
-fun Frogger.moveFrog(to: Direction):Frogger = if (frog.frames == 0) copy(frog = frog.move(to,cars))
-        else this
+fun Frogger.moveFrog(to: Direction):Frogger = if (frog.frames == 0) copy(frog = frog.move(to,cars)) else this
 
 fun Frogger.step() = copy(
     frog = frog.step(cars),

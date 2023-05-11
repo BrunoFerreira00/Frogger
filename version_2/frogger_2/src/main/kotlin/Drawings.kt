@@ -94,9 +94,9 @@ fun Canvas.drawFrog(x:Int,y:Int,state:FrogState) {
         FrogState.DROWN_1 -> drawImage("frogger|0,80,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.DROWN_2 -> drawImage("frogger|0,96,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.DROWN_3 -> drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.DEAD ->
-        FrogState.GONE ->
-        FrogState.HOME ->
+        FrogState.DEAD -> drawImage("frogger|0,128,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.GONE -> drawImage("frogger|0,144,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.HOME -> drawImage("frogger|0,160,16,16", x, y, GRID_SIZE, GRID_SIZE)
     } //TODO ajeitar as imagens do sapo incluindo a do move com os valores corretos
 }
 
@@ -123,10 +123,12 @@ fun Canvas.drawGame(g: Frogger) {
     drawRiver(0,0)
     setSidewalks(UPPERWALK_ROW,DOWNWALK_ROW)
     timesDrawHome()
-    drawFrog( g.frog.position.col, g.frog.position.row,g.frog.state)
+    if (g.frog.state != FrogState.GONE) {
+        drawFrog(g.frog.position.col, g.frog.position.row, g.frog.state)
+    }
     g.cars.forEach {
         drawCars(it.part.x, it.part.row*GRID_SIZE, listOf(it))
     }
     if (g.frog.state == FrogState.DEAD || g.frog.state == FrogState.GONE ) gameOver()
-    drawGrid()
+//  drawGrid()
 }
