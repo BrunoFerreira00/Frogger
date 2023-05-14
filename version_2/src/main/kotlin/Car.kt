@@ -42,7 +42,9 @@ fun createCars() = listOf(
     car(2, CarType.BULLDOZER), car(7, CarType.BULLDOZER), car(12, CarType.BULLDOZER),
     car(0, CarType.SPEED2), car(7, CarType.SPEED2), car(10, CarType.SPEED2)
 )
-
+/**
+ * Updating each car position
+ */
 fun Car.step() = copy(part = part.move())
 
 

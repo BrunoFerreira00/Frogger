@@ -37,12 +37,22 @@ data class Frog(
     val frames: Int = 0,
 )
 
+/**
+ * Creates the frog on certain condition
+ */
 fun createFrog() =
     Frog(Point(SCREEN_WIDTH/2,
         SCREEN_HEIGHT-GRID_SIZE),
         Direction.UP,
         FrogState.STAY,
         STATE_FRAMES)
+
+/**
+ * Indicates the next move of the frog and if it is valid
+ * @receiver the information about the Frog
+ * @param to indicates  the direction the frog is going to
+ * @param cars indicates the list of the cars
+ */
 fun Frog.move(to: Direction,cars: List<Car>):Frog =
     if (state == FrogState.GONE) this
         else if (state == FrogState.STAY )
@@ -52,17 +62,33 @@ fun Frog.move(to: Direction,cars: List<Car>):Frog =
                 face(to)
         else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars).move(to,cars)
 
-
+/**
+ * Indicates the new direction the draw of the frog is going
+ * @receiver the information about the Frog
+ * @param to indicates  the direction the frog is going to
+ */
 fun Frog.face(to: Direction):Frog =
-    if (dir==to) this else copy(dir= to)
+    if (dir==to) this else copy(dir=to)
 
-
+/**
+ * Indicates if the position of the frog is the same of any car
+ * @receiver the information about the Frog
+ * @param cars the list of cars
+ */
 fun Frog.detectCar(cars: List<Car>):Boolean =
     cars.any { position.row == it.part.row*GRID_SIZE && position.col+GRID_SIZE/2 in it.part.toRangeX() }
 
-fun Frog.detectRiver():Boolean= position.row in GRID_SIZE*4 .. GRID_SIZE*7
+/**
+ * Indicates if the position of the frog is the same of the river
+ * @receiver the information about the Frog
+ */
+fun Frog.detectRiver():Boolean= position.row in GRID_SIZE*3 .. GRID_SIZE*7
 
-
+/**
+ * Updating the frog position
+ * @receiver the information about the Frog
+ * @param cars the list of all cars
+ */
 fun Frog.step(cars: List<Car>): Frog {
     return if (frames > 0) {
         copy(frames = frames - 1)
