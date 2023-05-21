@@ -30,6 +30,8 @@ private const val STATE_FRAMES = 5
  * @property state the state of the frog
  * @property frames the number of frames left to change state
  */
+
+
 data class Frog(
     val position: Point,
     val dir: Direction,
@@ -76,13 +78,13 @@ fun Frog.face(to: Direction):Frog =
  * @param cars the list of cars
  */
 fun Frog.detectCar(cars: List<Car>):Boolean =
-    cars.any { position.row == it.part.row*GRID_SIZE && position.col+GRID_SIZE/2 in it.part.toRangeX() }
+    cars.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
 /**
  * Indicates if the position of the frog is the same of the river
  * @receiver the information about the Frog
  */
-fun Frog.detectRiver():Boolean= position.row in GRID_SIZE*3 .. GRID_SIZE*7
+fun Frog.detectRiver():Boolean= position.y in GRID_SIZE*3 .. GRID_SIZE*7
 
 /**
  * Updating the frog state
