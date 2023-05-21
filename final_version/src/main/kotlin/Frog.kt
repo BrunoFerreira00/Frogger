@@ -55,14 +55,14 @@ fun createFrog() =
  * @param to indicates  the direction the frog is going to
  * @param cars indicates the list of the cars
  */
-fun Frog.move(to: Direction,cars: List<Car>):Frog =
+fun Frog.move(to: Direction,cars: List<Car>,turtle: List<Turtle>,log: List<Log>):Frog =
     if (state == FrogState.GONE) this
         else if (state == FrogState.STAY )
             if((position+to).isValid())
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
             else
                 face(to)
-        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars).move(to,cars)
+        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars,turtle,log).move(to,cars,turtle,log)
 
 /**
  * Indicates the new direction the draw of the frog is going
@@ -80,18 +80,25 @@ fun Frog.face(to: Direction):Frog =
 fun Frog.detectCar(cars: List<Car>):Boolean =
     cars.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
+fun Frog.detectTurtle(turtle: List<Turtle>):Boolean =
+    turtle.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
+
+fun Frog.detectLog(log: List<Log>):Boolean =
+    log.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
+
 /**
  * Indicates if the position of the frog is the same of the river
  * @receiver the information about the Frog
  */
-fun Frog.detectRiver():Boolean= position.y in GRID_SIZE*3 .. GRID_SIZE*7
+fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>):Boolean= position.y in GRID_SIZE*3 .. GRID_SIZE*7 &&
+        !detectTurtle(turtle) && !detectLog(log)
 
 /**
  * Updating the frog state
  * @receiver the information about the Frog
  * @param cars the list of all cars
  */
-fun Frog.step(cars: List<Car>): Frog {
+fun Frog.step(cars: List<Car>,turtle: List<Turtle>,log: List<Log>): Frog {
     return if (frames > 0) {
         copy(frames = frames - 1)
     } else {
@@ -99,7 +106,7 @@ fun Frog.step(cars: List<Car>): Frog {
             FrogState.MOVE -> {
                 if (detectCar(cars)) {
                     copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
-                } else if (detectRiver()) {
+                } else if (detectRiver(turtle,log)) {
                     copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
                 } else {
                     copy(state = FrogState.STAY, frames = STATE_FRAMES)
