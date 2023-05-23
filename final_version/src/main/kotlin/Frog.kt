@@ -55,7 +55,7 @@ fun createFrog() =
  */
 
 fun Frog.move(to: Direction,cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Home>):Frog =
-    if (state == FrogState.GONE) this
+    if (state >= FrogState.SMASH_1 && state <= FrogState.HOME) this
         else if (state == FrogState.STAY )
             if((position+to).isValid())
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
@@ -88,15 +88,15 @@ fun Frog.detectLog(log: List<Log>):Boolean =
 fun Frog.detectHome(homes: List<Home>) =
     homes.any {position.x == it.x+GRID_SIZE/2 && position.y == HOME_ROW }
 
-fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>):Boolean=
-    position.y in GRID_SIZE*3 .. GRID_SIZE*7 &&
-    !detectTurtle(turtle) && !detectLog(log)
+fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>,homes:List<Home>):Boolean=
+    position.y in GRID_SIZE*2 .. GRID_SIZE*7 &&
+    !detectTurtle(turtle) && !detectLog(log) && !detectHome(homes)
 
 
 fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:List<Log>, homes:List<Home>):Frog =
     when {
          detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
-         detectRiver(turtles, logs) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
+         detectRiver(turtles, logs,homes) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
          detectHome(homes) ->copy(state = FrogState.HOME, frames = STATE_FRAMES)
         else -> copy(state = state)
     }
@@ -121,9 +121,9 @@ fun Frog.step(cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Ho
             FrogState.MOVE ->
                 checkState(FrogState.STAY,cars,turtle,log,homes)
             FrogState.SMASH_1, FrogState.SMASH_2, FrogState.DROWN_1, FrogState.DROWN_2 ->
-                copy(frames = STATE_FRAMES, state= FrogState.values()[state.ordinal+1])
+                copy(state= FrogState.values()[state.ordinal+1], frames = STATE_FRAMES)
             FrogState.SMASH_3, FrogState.DROWN_3 ->
-                copy( state = FrogState.DEAD, frames = STATE_FRAMES)
+                copy(state = FrogState.DEAD, frames = STATE_FRAMES)
             FrogState.DEAD ->
                 copy(state = FrogState.GONE)
             else -> this

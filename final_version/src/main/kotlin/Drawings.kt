@@ -74,22 +74,26 @@ fun Canvas.drawRiver(x: Int, y:Int){
 }
 
 fun Canvas.drawLogs(x:Int,y: Int,logs:List<Log>){
-    logs.forEach(){
-        drawImage("frogger|0,133,48,16",x,y,GRID_SIZE,GRID_SIZE)
-        drawImage("frogger|17,133,48,16",x,y,GRID_SIZE*(it.part.size-2),GRID_SIZE)
-        drawImage("frogger|35,133,48,16",x,y,GRID_SIZE,GRID_SIZE)
+    logs.forEach{
+        drawImage("frogger|0,133,16,16",x,y,GRID_SIZE,GRID_SIZE)
+        for (l in 1 until it.part.size)
+            drawImage("frogger|17,133,16,16",x+(GRID_SIZE-6)*l,y,GRID_SIZE,GRID_SIZE)
+        drawImage("frogger|35,133,16,16",x+GRID_SIZE*(it.part.size-1),y,GRID_SIZE,GRID_SIZE)
     }
 
 }
 
 fun Canvas.drawTurtles(x: Int,y: Int,turtles:List<Turtle>){
-    turtles.forEach{when(it.state()){
-        TurtleState.SWIM_1-> drawImage("frogger|0,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.SWIM_2-> drawImage("frogger|17,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.SWIM_3-> drawImage("frogger|35,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.DIVE_1-> drawImage("frogger|54,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.DIVE_2-> drawImage("frogger|71,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.UNDER_WATER -> this
+    turtles.forEach{for (t in 0 until  it.part.size) {
+        when(it.state()){
+            TurtleState.SWIM_1-> drawImage("frogger|0,152,16,16", x+GRID_SIZE*t, y, GRID_SIZE, GRID_SIZE)
+            TurtleState.SWIM_2-> drawImage("frogger|17,152,16,16", x+GRID_SIZE*t, y, GRID_SIZE, GRID_SIZE)
+            TurtleState.SWIM_3-> drawImage("frogger|35,152,16,16", x+GRID_SIZE*t, y, GRID_SIZE, GRID_SIZE)
+            TurtleState.DIVE_1-> drawImage("frogger|54,152,16,16", x+GRID_SIZE*t, y, GRID_SIZE, GRID_SIZE)
+            TurtleState.DIVE_2-> drawImage("frogger|71,152,16,16", x+GRID_SIZE*t, y, GRID_SIZE, GRID_SIZE)
+            TurtleState.UNDER_WATER -> this
+
+        }
     }
     }
 }
