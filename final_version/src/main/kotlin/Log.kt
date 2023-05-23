@@ -25,3 +25,5 @@ fun createLogs() = listOf(
  * The log is moved by moving its movable part.
  */
 fun Log.move() = Log(part= part.move())
+
+

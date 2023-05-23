@@ -78,28 +78,49 @@ fun Frog.face(to: Direction):Frog =
 fun Frog.detectCar(cars: List<Car>):Boolean =
     cars.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
-fun Frog.detectTurtle(turtle: List<Turtle>):Boolean =
-    turtle.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX()
+fun Frog.detectTurtle(turtles: List<Turtle>):Boolean =
+    turtles.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX()
             && it.state() != TurtleState.UNDER_WATER}
 
-fun Frog.detectLog(log: List<Log>):Boolean =
-    log.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
+fun Frog.detectLog(logs: List<Log>):Boolean =
+    logs.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
-fun Frog.detectHome(homes: List<Home>) =
-    homes.any {position.x == it.x+GRID_SIZE/2 && position.y == HOME_ROW }
+fun Frog.detectHome(homes: List<Home>):Boolean =
+    homes.any {position.x == it.x && position.y == HOME_ROW
+            && it.canAccept(position) && !it.isFull()}
 
-fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>,homes:List<Home>):Boolean=
+fun Frog.detectRiver(turtles: List<Turtle>,logs: List<Log>,homes:List<Home>):Boolean=
     position.y in GRID_SIZE*2 .. GRID_SIZE*7 &&
-    !detectTurtle(turtle) && !detectLog(log) && !detectHome(homes)
+    !detectTurtle(turtles) && !detectLog(logs) && !detectHome(homes)
 
 
 fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:List<Log>, homes:List<Home>):Frog =
     when {
-         detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
-         detectRiver(turtles, logs,homes) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
-         detectHome(homes) ->copy(state = FrogState.HOME, frames = STATE_FRAMES)
+        detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
+        detectRiver(turtles, logs, homes) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
+        detectHome(homes) -> copy(state = FrogState.HOME, frames = STATE_FRAMES)
+        detectLog(logs) -> copy(position = Point(position.x + logSpeed(), position.y), state = state)
+        detectTurtle(turtles) -> copy(position = Point(position.x + turtleSpeed(), position.y), state = state)
         else -> copy(state = state)
     }
+
+fun Frog.logSpeed(): Int {
+    createLogs().forEach {
+        if (position.y == it.part.row*GRID_SIZE)
+            return it.part.speed
+    }
+    return 0
+}
+
+fun Frog.turtleSpeed():Int{
+    createTurtles().forEach {
+        if (position.y == it.part.row*GRID_SIZE)
+            return it.part.speed
+    }
+    return 0
+}
+
+
 
 /**
  * Indicates if the position of the frog is the same of the river
@@ -111,15 +132,15 @@ fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:
  * @receiver the information about the Frog
  * @param cars the list of all cars
  */
-fun Frog.step(cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Home>): Frog {
+fun Frog.step(cars: List<Car>,turtles: List<Turtle>,logs: List<Log>,homes: List<Home>): Frog {
     return if (frames > 0) {
         copy(frames = frames - 1)
     } else {
         when (state) {
             FrogState.STAY ->
-                checkState(FrogState.STAY,cars,turtle,log,homes)
+                checkState(FrogState.STAY,cars,turtles,logs,homes)
             FrogState.MOVE ->
-                checkState(FrogState.STAY,cars,turtle,log,homes)
+                checkState(FrogState.STAY,cars,turtles,logs,homes)
             FrogState.SMASH_1, FrogState.SMASH_2, FrogState.DROWN_1, FrogState.DROWN_2 ->
                 copy(state= FrogState.values()[state.ordinal+1], frames = STATE_FRAMES)
             FrogState.SMASH_3, FrogState.DROWN_3 ->

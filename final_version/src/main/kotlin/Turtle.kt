@@ -90,3 +90,5 @@ fun Turtle.move(): Turtle =
             anim = (anim+1) % if (diver) DiverStates.size else NormalStates.size,
             frames = STATE_FRAMES
         )
+
+

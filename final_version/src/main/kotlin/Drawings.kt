@@ -149,14 +149,23 @@ fun Canvas.drawFrog(x:Int,y:Int,state:FrogState,dir:Direction){
  * @receiver the canvas where it will be drawing
  */
 fun Canvas.gameOver(){
-    drawImage("frogger|144,361,9,8",(GRID_SIZE/2)+GRID_SIZE*2,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|91,361,9,8",(GRID_SIZE/2)+GRID_SIZE*3,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|46,370,9,8",(GRID_SIZE/2)+GRID_SIZE*4,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|128,361,9,8",(GRID_SIZE/2)+GRID_SIZE*5,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|65,370,9,8",(GRID_SIZE/2)+GRID_SIZE*7,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|127,370,8,8",(GRID_SIZE/2)+GRID_SIZE*8,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
-    drawImage("frogger|128,361,9,8",(GRID_SIZE/2)+GRID_SIZE*9,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|144,362,8,8",(GRID_SIZE/2)+GRID_SIZE*2,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|91,362,8,8",(GRID_SIZE/2)+GRID_SIZE*3,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|46,371,8,8",(GRID_SIZE/2)+GRID_SIZE*4,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|128,362,8,8",(GRID_SIZE/2)+GRID_SIZE*5,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|65,371,8,8",(GRID_SIZE/2)+GRID_SIZE*7,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|127,371,8,8",(GRID_SIZE/2)+GRID_SIZE*8,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|128,362,8,8",(GRID_SIZE/2)+GRID_SIZE*9,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
     drawImage("frogger|91,371,8,8",(GRID_SIZE/2)+GRID_SIZE*10,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+}
+
+fun Canvas.youWin(){
+    drawImage("frogger|2,380,8,8",(GRID_SIZE/2)+GRID_SIZE*3,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|65,371,8,8",(GRID_SIZE/2)+GRID_SIZE*4,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|118,371,8,8",(GRID_SIZE/2)+GRID_SIZE*5,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|136,371,8,8",(GRID_SIZE/2)+GRID_SIZE*7,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|11,371,8,8",(GRID_SIZE/2)+GRID_SIZE*8,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
+    drawImage("frogger|55,371,8,8",(GRID_SIZE/2)+GRID_SIZE*9,UPPERWALK_ROW,GRID_SIZE,GRID_SIZE)
 }
 
 /**
@@ -182,6 +191,7 @@ fun Canvas.drawGame(g: Frogger) {
     g.cars.forEach {
         drawCars(it.part.x, it.part.row*GRID_SIZE, listOf(it))
     }
-    if (g.frog.state == FrogState.DEAD || g.frog.state == FrogState.GONE ) gameOver()
-//  drawGrid()
+    if (g.frog.state >= FrogState.SMASH_1 && g.frog.state <= FrogState.GONE ) gameOver()
+    if (g.frog.state == FrogState.HOME) youWin()
+  //  drawGrid()
 }
