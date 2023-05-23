@@ -86,23 +86,13 @@ fun Frog.detectLog(logs: List<Log>):Boolean =
     logs.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
 fun Frog.detectHome(homes: List<Home>):Boolean =
-    homes.any {position.x == it.x && position.y == HOME_ROW
-            && it.canAccept(position) && !it.isFull()}
-
-fun Frog.detectRiver(turtles: List<Turtle>,logs: List<Log>,homes:List<Home>):Boolean=
-    position.y in GRID_SIZE*2 .. GRID_SIZE*7 &&
-    !detectTurtle(turtles) && !detectLog(logs) && !detectHome(homes)
-
-
-fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:List<Log>, homes:List<Home>):Frog =
-    when {
-        detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
-        detectRiver(turtles, logs, homes) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
-        detectHome(homes) -> copy(state = FrogState.HOME, frames = STATE_FRAMES)
-        detectLog(logs) -> copy(position = Point(position.x + logSpeed(), position.y), state = state)
-        detectTurtle(turtles) -> copy(position = Point(position.x + turtleSpeed(), position.y), state = state)
-        else -> copy(state = state)
+    homes.any {
+        position.x in it.x - GRID_SIZE / 2..it.x + GRID_SIZE / 2 && position.y == HOME_ROW
     }
+fun Frog.detectRiver(turtles: List<Turtle>,logs: List<Log>,homes:List<Home>):Boolean=
+    position.y in GRID_SIZE*2 .. GRID_SIZE*7
+    && !detectTurtle(turtles) && !detectLog(logs) && !detectHome(homes)
+
 
 fun Frog.logSpeed(): Int {
     createLogs().forEach {
@@ -119,6 +109,17 @@ fun Frog.turtleSpeed():Int{
     }
     return 0
 }
+fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:List<Log>, homes:List<Home>):Frog =
+    when {
+        detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
+        detectRiver(turtles, logs, homes) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
+        detectHome(homes) -> copy(state = FrogState.HOME, frames = STATE_FRAMES)
+        detectLog(logs) -> copy(position = Point(position.x + logSpeed(), position.y), state = state)
+        detectTurtle(turtles) -> copy(position = Point(position.x + turtleSpeed(), position.y), state = state)
+        else -> copy(state = state)
+    }
+
+
 
 
 
