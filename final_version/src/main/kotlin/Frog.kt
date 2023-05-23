@@ -1,5 +1,3 @@
-import javax.swing.text.Position
-
 /**
  * Represents the state of a frog.
  * STAY, GONE and HOME are stable states, the others are intermediate states.
@@ -55,14 +53,14 @@ fun createFrog() =
  * @param to indicates  the direction the frog is going to
  * @param cars indicates the list of the cars
  */
-fun Frog.move(to: Direction,cars: List<Car>,turtle: List<Turtle>,log: List<Log>):Frog =
+
+fun Frog.move(to: Direction,cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Home>):Frog =
     if (state == FrogState.GONE) this
         else if (state == FrogState.STAY )
             if((position+to).isValid())
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
-            else
-                face(to)
-        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars,turtle,log).move(to,cars,turtle,log)
+               else face(to)
+        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars,turtle,log,homes).move(to,cars,turtle,log,homes)
 
 /**
  * Indicates the new direction the draw of the frog is going
@@ -81,41 +79,53 @@ fun Frog.detectCar(cars: List<Car>):Boolean =
     cars.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
 
 fun Frog.detectTurtle(turtle: List<Turtle>):Boolean =
-    turtle.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
+    turtle.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX()
+            && it.state() != TurtleState.UNDER_WATER}
 
 fun Frog.detectLog(log: List<Log>):Boolean =
     log.any { position.y == it.part.row*GRID_SIZE && position.x+GRID_SIZE/2 in it.part.toRangeX() }
+
+fun Frog.detectHome(homes: List<Home>) =
+    homes.any {position.x == it.x+GRID_SIZE/2 && position.y == HOME_ROW }
+
+fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>):Boolean=
+    position.y in GRID_SIZE*3 .. GRID_SIZE*7 &&
+    !detectTurtle(turtle) && !detectLog(log)
+
+
+fun Frog.checkState(state:FrogState, cars:List<Car>, turtles:List<Turtle>, logs:List<Log>, homes:List<Home>):Frog =
+    when {
+         detectCar(cars) -> copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
+         detectRiver(turtles, logs) -> copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
+         detectHome(homes) ->copy(state = FrogState.HOME, frames = STATE_FRAMES)
+        else -> copy(state = state)
+    }
 
 /**
  * Indicates if the position of the frog is the same of the river
  * @receiver the information about the Frog
  */
-fun Frog.detectRiver(turtle: List<Turtle>,log: List<Log>):Boolean= position.y in GRID_SIZE*3 .. GRID_SIZE*7 &&
-        !detectTurtle(turtle) && !detectLog(log)
 
 /**
  * Updating the frog state
  * @receiver the information about the Frog
  * @param cars the list of all cars
  */
-fun Frog.step(cars: List<Car>,turtle: List<Turtle>,log: List<Log>): Frog {
+fun Frog.step(cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Home>): Frog {
     return if (frames > 0) {
         copy(frames = frames - 1)
     } else {
         when (state) {
-            FrogState.MOVE -> {
-                if (detectCar(cars)) {
-                    copy(state = FrogState.SMASH_1, frames = STATE_FRAMES)
-                } else if (detectRiver(turtle,log)) {
-                    copy(state = FrogState.DROWN_1, frames = STATE_FRAMES)
-                } else {
-                    copy(state = FrogState.STAY, frames = STATE_FRAMES)
-                }
-            }
+            FrogState.STAY ->
+                checkState(FrogState.STAY,cars,turtle,log,homes)
+            FrogState.MOVE ->
+                checkState(FrogState.STAY,cars,turtle,log,homes)
             FrogState.SMASH_1, FrogState.SMASH_2, FrogState.DROWN_1, FrogState.DROWN_2 ->
                 copy(frames = STATE_FRAMES, state= FrogState.values()[state.ordinal+1])
-            FrogState.SMASH_3, FrogState.DROWN_3 -> copy( state = FrogState.DEAD, frames = STATE_FRAMES)
-            FrogState.DEAD -> copy(state = FrogState.GONE)
+            FrogState.SMASH_3, FrogState.DROWN_3 ->
+                copy( state = FrogState.DEAD, frames = STATE_FRAMES)
+            FrogState.DEAD ->
+                copy(state = FrogState.GONE)
             else -> this
         }
     }

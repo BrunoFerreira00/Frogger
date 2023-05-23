@@ -1,7 +1,7 @@
 import kotlin.math.absoluteValue
 
 
-const val END_ROW = GRID_SIZE * 3
+const val END_ROW = GRID_SIZE * 2
 /**
  * The row where the homes are.
  */

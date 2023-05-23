@@ -89,7 +89,7 @@ fun Canvas.drawTurtles(x: Int,y: Int,turtles:List<Turtle>){
         TurtleState.SWIM_3-> drawImage("frogger|35,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
         TurtleState.DIVE_1-> drawImage("frogger|54,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
         TurtleState.DIVE_2-> drawImage("frogger|71,152,32,16",x,y,GRID_SIZE*it.part.size,GRID_SIZE)
-        TurtleState.UNDER_WATER -> drawRiver(x,y)
+        TurtleState.UNDER_WATER -> this
     }
     }
 }
@@ -136,7 +136,7 @@ fun Canvas.drawFrog(x:Int,y:Int,state:FrogState,dir:Direction){
         FrogState.DROWN_3 -> drawImage("frogger|0,112,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.DEAD -> drawImage("frogger|108,79,16,16", x, y, GRID_SIZE, GRID_SIZE)
         FrogState.GONE -> drawImage("frogger|0,144,16,16", x, y, GRID_SIZE, GRID_SIZE)
-        FrogState.HOME -> drawImage("frogger|0,160,16,16", x, y, GRID_SIZE, GRID_SIZE)
+        FrogState.HOME -> drawImage("frogger|44,195,16,16", x, y, GRID_SIZE, GRID_SIZE)
     } 
 }
 
