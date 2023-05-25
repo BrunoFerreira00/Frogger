@@ -16,7 +16,7 @@ data class Frogger(
  * @receiver the information about the frog
  * @param to indicates the direction where the frog is going
  */
-fun Frogger.moveFrog(to: Direction):Frogger = if (frog.frames == 0) copy(frog = frog.move(to,cars,turtles,logs,homes)) else this
+fun Frogger.moveFrog(to: Direction):Frogger = if (frog.frames == 0) copy(frog = frog.move(to)) else this
 
 /**
  * Updating both frog and cars

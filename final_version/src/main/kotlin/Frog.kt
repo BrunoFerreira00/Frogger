@@ -51,16 +51,15 @@ fun createFrog() =
  * Indicates the next move of the frog and if it is valid
  * @receiver the information about the Frog
  * @param to indicates  the direction the frog is going to
- * @param cars indicates the list of the cars
  */
 
-fun Frog.move(to: Direction,cars: List<Car>,turtle: List<Turtle>,log: List<Log>,homes: List<Home>):Frog =
+fun Frog.move(to: Direction):Frog =
     if (state >= FrogState.SMASH_1 && state <= FrogState.HOME) this
         else if (state == FrogState.STAY )
             if((position+to).isValid())
                 face(to).copy(position = position + to,state = FrogState.MOVE,frames = STATE_FRAMES)
                else face(to)
-        else copy(state = FrogState.STAY, frames = STATE_FRAMES).step(cars,turtle,log,homes).move(to,cars,turtle,log,homes)
+        else this
 
 /**
  * Indicates the new direction the draw of the frog is going
